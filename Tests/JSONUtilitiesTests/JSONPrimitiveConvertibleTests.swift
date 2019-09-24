@@ -27,7 +27,7 @@ class JSONPrimitiveConvertibleTests: XCTestCase {
     }
     XCTAssertEqual(expectedURL, mandatoryTransformedURL)
 
-    let optionalTransformedURL: URL? = jsonDictionary.json(atKeyPath: "url")
+    let optionalTransformedURL: URL? = try? jsonDictionary.json(atKeyPath: "url")
     XCTAssertEqual(expectedURL, optionalTransformedURL)
 
     expectDecodingError(reason: .conversionFailure, keyPath: "invalid_url") {
@@ -42,7 +42,7 @@ class JSONPrimitiveConvertibleTests: XCTestCase {
         let _ : URL = try jsonDictionary.json(atKeyPath: invalidKey)
     }
 
-    let urlFromMissingKey: URL? = jsonDictionary.json(atKeyPath: invalidKey)
+    let urlFromMissingKey: URL? = try? jsonDictionary.json(atKeyPath: invalidKey)
     XCTAssertNil(urlFromMissingKey)
   }
 
@@ -57,10 +57,10 @@ class JSONPrimitiveConvertibleTests: XCTestCase {
       let _ : URL = try jsonDictionary.json(atKeyPath: invalidKey)
     }
 
-    let decodedOptionalURLs: [URL]? = jsonDictionary.json(atKeyPath: "urls")
+    let decodedOptionalURLs: [URL]? = try? jsonDictionary.json(atKeyPath: "urls")
     XCTAssertEqual(decodedOptionalURLs!, expectedURLs)
 
-    let decodedMissingURLs: [URL]? = jsonDictionary.json(atKeyPath: invalidKey)
+    let decodedMissingURLs: [URL]? = try? jsonDictionary.json(atKeyPath: invalidKey)
     XCTAssertNil(decodedMissingURLs)
   }
 
